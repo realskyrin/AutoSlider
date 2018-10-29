@@ -22,7 +22,7 @@ import cc.skyrin.autoslider.util.SystemSetings;
 
 public class GlobalActionBarService extends AccessibilityService {
 
-    ViewGroup layout;
+    View layout;
     FloatWindow floatWindow;
 
     Timer timer;
@@ -81,10 +81,11 @@ public class GlobalActionBarService extends AccessibilityService {
     }
 
     private void showActionBar() {
-        layout = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.action_bar, null);
+        layout = LayoutInflater.from(this).inflate(R.layout.action_bar, null);
         floatWindow = new FloatWindow.With(this, layout)
                 .setModality(false)
                 .setMoveAble(true)
+                .setAutoAlign(true)
                 .create();
         floatWindow.show();
     }
@@ -119,15 +120,23 @@ public class GlobalActionBarService extends AccessibilityService {
     }
 
     private void configureSwipeButton() {
-        View btn_left = layout.findViewById(R.id.btn_left);
-        btn_left.setOnClickListener(view -> {
+        View btn_settings = layout.findViewById(R.id.btn_settings);
+        View btn_home = layout.findViewById(R.id.btn_home);
+        CheckBox cbRead = layout.findViewById(R.id.cb_read);
+        btn_settings.setOnClickListener(v -> {
             if (MyApplication.isActivityVisible()) {
                 sendBroadcast(new Intent(Constants.ACTION_BACKPRESS));
             } else {
                 SystemSetings.startApp(getApplicationContext(), getPackageName());
             }
         });
-        CheckBox cbRead = layout.findViewById(R.id.cb_read);
+        btn_home.setOnClickListener(view -> {
+            if (MyApplication.isActivityVisible()) {
+                sendBroadcast(new Intent(Constants.ACTION_BACKPRESS));
+            } else {
+                SystemSetings.startApp(getApplicationContext(), getPackageName());
+            }
+        });
         cbRead.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 startTimerTask();

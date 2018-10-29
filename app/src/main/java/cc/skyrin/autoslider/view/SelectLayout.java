@@ -101,7 +101,10 @@ public class SelectLayout extends ConstraintLayout {
     }
 
     public Rect getRect() {
-        return rect;
+        Rect rstRect = rect;
+        rstRect.top+=getStatusBarHeight();
+        rstRect.bottom+=getStatusBarHeight();
+        return rstRect;
     }
 
     public float dp2px(float dp) {

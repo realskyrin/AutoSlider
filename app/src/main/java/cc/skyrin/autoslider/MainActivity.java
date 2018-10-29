@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
     Button btn_ok;
 
     ViewGroup dialogSelectArea;
-    Button btn_save;
+    View btn_save;
+    View btn_cancel;
 
     MaterialDialog customDialog;
     View dialogView;
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         edt_max_val = tl_max_val.getEditText();
         edt_min_val = tl_min_val.getEditText();
         btn_ok = dialogView.findViewById(R.id.btn_ok);
+
         btn_ok.setOnClickListener(v -> {
 
             if (StringUtils.isEmpty(edt_min_val.getText().toString()) || StringUtils.isEmpty(edt_max_val.getText().toString())) {
@@ -202,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         dialogSelectArea = (ViewGroup) View.inflate(this, R.layout.dialog_select_area, null);
         sel = dialogSelectArea.findViewById(R.id.sel);
         btn_save = dialogSelectArea.findViewById(R.id.btn_save);
+        btn_cancel = dialogSelectArea.findViewById(R.id.btn_cancel);
         btn_save.setOnClickListener(v -> {
             wm.removeView(dialogSelectArea);
             Rect rect = sel.getRect();
@@ -222,6 +225,10 @@ public class MainActivity extends AppCompatActivity {
                 CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_END_Y, rect.bottom);
             }
 
+            sel.clear();
+        });
+        btn_cancel.setOnClickListener(v -> {
+            wm.removeView(dialogSelectArea);
             sel.clear();
         });
     }

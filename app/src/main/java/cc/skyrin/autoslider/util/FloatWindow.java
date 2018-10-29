@@ -98,7 +98,6 @@ public class FloatWindow {
     @SuppressLint({"ClickableViewAccessibility"})
     private void initFloatView() {
         floatView = new FloatView(mContext);
-//        floatView.setBackgroundColor(Color.TRANSPARENT);
         if (moveAble) {
             floatView.setOnTouchListener(new WindowTouchListener());
         }
@@ -108,8 +107,7 @@ public class FloatWindow {
         mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         if (modality) {
             mLayoutParams.flags &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
             mLayoutParams.flags &= ~WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;

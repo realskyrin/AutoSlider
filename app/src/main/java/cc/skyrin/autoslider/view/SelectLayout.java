@@ -26,6 +26,7 @@ public class SelectLayout extends ConstraintLayout {
     Rect stopStrRect = new Rect();
 
     Point start = new Point();
+
     public SelectLayout(Context context) {
         super(context);
     }
@@ -47,13 +48,13 @@ public class SelectLayout extends ConstraintLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawRect(rect,paint);
-        String strStartPos = "["+rect.left+","+rect.top+"]";
-        String strEndPos = "["+rect.right+","+rect.bottom+"]";
-        paintText.getTextBounds(strStartPos,0,strStartPos.length(),startStrRect);
-        paintText.getTextBounds(strEndPos,0,strEndPos.length(),stopStrRect);
-        canvas.drawText(strStartPos,rect.left+8,rect.top+startStrRect.bottom-startStrRect.top,paintText);
-        canvas.drawText(strEndPos,rect.right-stopStrRect.right-10,rect.bottom-12,paintText);
+        canvas.drawRect(rect, paint);
+        String strStartPos = "[" + rect.left + "," + rect.top + "]";
+        String strEndPos = "[" + rect.right + "," + rect.bottom + "]";
+        paintText.getTextBounds(strStartPos, 0, strStartPos.length(), startStrRect);
+        paintText.getTextBounds(strEndPos, 0, strEndPos.length(), stopStrRect);
+        canvas.drawText(strStartPos, rect.left + 8, rect.top + startStrRect.bottom - startStrRect.top, paintText);
+        canvas.drawText(strEndPos, rect.right - stopStrRect.right - 10, rect.bottom - 12, paintText);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -62,11 +63,11 @@ public class SelectLayout extends ConstraintLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 L.d("ACTION_DOWN");
-                setStartPos((int)event.getRawX(),(int)(event.getRawY()-getStatusBarHeight()));
+                setStartPos((int) event.getRawX(), (int) (event.getRawY() - getStatusBarHeight()));
                 break;
             case MotionEvent.ACTION_MOVE:
                 L.d("ACTION_MOVE");
-                setStopPos((int)event.getRawX(),(int)(event.getRawY()-getStatusBarHeight()));
+                setStopPos((int) event.getRawX(), (int) (event.getRawY() - getStatusBarHeight()));
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
@@ -85,11 +86,11 @@ public class SelectLayout extends ConstraintLayout {
     }
 
     private void setStopPos(int rawX, int rawY) {
-        rect.left = rawX<start.x?rawX:start.x;
-        rect.right = rawX>start.x?rawX:start.x;
+        rect.left = rawX < start.x ? rawX : start.x;
+        rect.right = rawX > start.x ? rawX : start.x;
 
-        rect.top = rawY<start.y?rawY:start.y;
-        rect.bottom = rawY>start.y?rawY:start.y;
+        rect.top = rawY < start.y ? rawY : start.y;
+        rect.bottom = rawY > start.y ? rawY : start.y;
     }
 
     public void clear() {
@@ -102,8 +103,8 @@ public class SelectLayout extends ConstraintLayout {
 
     public Rect getRect() {
         Rect rstRect = rect;
-        rstRect.top+=getStatusBarHeight();
-        rstRect.bottom+=getStatusBarHeight();
+        rstRect.top += getStatusBarHeight();
+        rstRect.bottom += getStatusBarHeight();
         return rstRect;
     }
 

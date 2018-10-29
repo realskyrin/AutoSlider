@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.os.Build;
@@ -11,8 +12,10 @@ import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     EditText edt_max_val;
     Button btn_ok;
 
-    ViewGroup dialogSelectArea;
+    SelectLayout selectLayout;
     View btn_save;
     View btn_cancel;
 
@@ -79,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver myReceiver;
     int clickId = 0;
     ViewGroup layout;
-    SelectLayout sel;
 
     int[] pps = {437, 212, 356, 139, 277, 298, 303, 329, 153, 286, 349, 461, 406, 284, 417, 297};
     private WindowManager wm;
@@ -201,13 +203,12 @@ public class MainActivity extends AppCompatActivity {
             showToast("OK");
         });
 
-        dialogSelectArea = (ViewGroup) View.inflate(this, R.layout.dialog_select_area, null);
-        sel = dialogSelectArea.findViewById(R.id.sel);
-        btn_save = dialogSelectArea.findViewById(R.id.btn_save);
-        btn_cancel = dialogSelectArea.findViewById(R.id.btn_cancel);
+        selectLayout = (SelectLayout) View.inflate(this, R.layout.dialog_select_area, null);
+        btn_save = selectLayout.findViewById(R.id.btn_save);
+        btn_cancel = selectLayout.findViewById(R.id.btn_cancel);
         btn_save.setOnClickListener(v -> {
-            wm.removeView(dialogSelectArea);
-            Rect rect = sel.getRect();
+            wm.removeView(selectLayout);
+            Rect rect = selectLayout.getRect();
 
             if (clickId == R.id.rl_select_start_area) {
                 String strStartPos = "["+rect.left+","+rect.top+"]"+","+"["+rect.right+","+rect.bottom+"]";
@@ -225,11 +226,11 @@ public class MainActivity extends AppCompatActivity {
                 CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_END_Y, rect.bottom);
             }
 
-            sel.clear();
+            selectLayout.clear();
         });
         btn_cancel.setOnClickListener(v -> {
-            wm.removeView(dialogSelectArea);
-            sel.clear();
+            wm.removeView(selectLayout);
+            selectLayout.clear();
         });
     }
 
@@ -311,8 +312,12 @@ public class MainActivity extends AppCompatActivity {
         lp.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.gravity = Gravity.TOP;
-        wm.addView(dialogSelectArea, lp);
+        lp.gravity = Gravity.END|Gravity.TOP;
+        wm.addView(selectLayout, lp);
+    }
+
+    public float dp2px(float dp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().getDisplayMetrics());
     }
 
     /**

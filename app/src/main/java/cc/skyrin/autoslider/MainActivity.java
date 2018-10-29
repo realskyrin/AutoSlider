@@ -1,6 +1,9 @@
 package cc.skyrin.autoslider;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     View dialogView;
 
     Context context;
-
+    BroadcastReceiver myReceiver;
     int clickId = 0;
 
     @Override
@@ -70,11 +73,13 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         context = this;
         initData();
+        registerErrorReceiver();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        MyApplication.activityResumed();
         if (SystemSetings.isAppOpsOn(this)) {
             tv_ops_status.setText("已开启");
             tv_ops_status.setTextColor(getColor(R.color.ok));
@@ -89,6 +94,20 @@ public class MainActivity extends AppCompatActivity {
         } else {
             tv_acc_status.setText("未开启");
             tv_acc_status.setTextColor(getColor(R.color.no));
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApplication.activityPaused();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (myReceiver!=null){
+            unregisterReceiver(myReceiver);
         }
     }
 
@@ -205,6 +224,30 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * room error receiver.
+     */
+    private void registerErrorReceiver() {
+        myReceiver = new MyReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_BACKPRESS);
+        registerReceiver(myReceiver, filter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    class MyReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Constants.ACTION_BACKPRESS.equals(intent.getAction())) {
+                onBackPressed();
+            }
         }
     }
 }

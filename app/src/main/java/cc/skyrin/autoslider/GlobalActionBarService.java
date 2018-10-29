@@ -2,13 +2,13 @@ package cc.skyrin.autoslider;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
+import android.content.Intent;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
-import android.widget.Button;
 import android.widget.CheckBox;
 
 import java.util.Random;
@@ -111,7 +111,11 @@ public class GlobalActionBarService extends AccessibilityService {
     private void configureSwipeButton() {
         View btn_left = layout.findViewById(R.id.btn_left);
         btn_left.setOnClickListener(view -> {
-            SystemSetings.startApp(getApplicationContext(),getPackageName());
+            if (MyApplication.isActivityVisible()) {
+                sendBroadcast(new Intent(Constants.ACTION_BACKPRESS));
+            } else {
+                SystemSetings.startApp(getApplicationContext(), getPackageName());
+            }
         });
         CheckBox cbRead = layout.findViewById(R.id.cb_read);
         cbRead.setOnCheckedChangeListener((buttonView, isChecked) -> {

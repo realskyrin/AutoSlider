@@ -16,4 +16,6 @@ public class Constants {
     public static final String KEY_MEET_MODE_SAVE = "KEY_MEET_MODE_SAVE";
     public static final String KEY_ACCOUNT_SET = "KEY_ACCOUNT_SET";
     public static final String KEY_MEET_MANAGE = "KEY_MEET_MANAGE";
+
+    public static final String ACTION_BACKPRESS = "cc.skyrin.autoslider.ACTION_BACKPRESS";
 }

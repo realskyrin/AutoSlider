@@ -5,6 +5,7 @@ import android.accessibilityservice.GestureDescription;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
@@ -108,7 +109,7 @@ public class GlobalActionBarService extends AccessibilityService {
     }
 
     private void configureSwipeButton() {
-        Button btn_left = layout.findViewById(R.id.btn_left);
+        View btn_left = layout.findViewById(R.id.btn_left);
         btn_left.setOnClickListener(view -> {
             SystemSetings.startApp(getApplicationContext(),getPackageName());
         });

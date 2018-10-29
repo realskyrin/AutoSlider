@@ -194,6 +194,7 @@ public class SystemSetings {
         try {
             PackageManager manager = context.getPackageManager();
             Intent openApp = manager.getLaunchIntentForPackage(pkgName);
+            openApp.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             if (openApp==null){
                 return false;
             }

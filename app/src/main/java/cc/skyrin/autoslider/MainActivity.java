@@ -4,16 +4,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     EditText edt_max_val;
     Button btn_ok;
 
-    View dialogSelectArea;
+    ViewGroup dialogSelectArea;
     Button btn_save;
 
     MaterialDialog customDialog;
@@ -72,8 +75,10 @@ public class MainActivity extends AppCompatActivity {
     Context context;
     BroadcastReceiver myReceiver;
     int clickId = 0;
-    FloatWindow fvSelectArea;
     ViewGroup layout;
+
+    int[] pps = {437,212,356,139,277,298,303,329,153,286,349,461,406,284,417,297};
+    private WindowManager wm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,10 +179,10 @@ public class MainActivity extends AppCompatActivity {
             showToast("OK");
         });
 
-        dialogSelectArea = View.inflate(this, R.layout.dialog_select_area, null);
+        dialogSelectArea = (ViewGroup) View.inflate(this, R.layout.dialog_select_area, null);
         btn_save = dialogSelectArea.findViewById(R.id.btn_save);
         btn_save.setOnClickListener(v -> {
-            fvSelectArea.remove();
+            wm.removeView(dialogSelectArea);
         });
     }
 
@@ -229,11 +234,20 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.rl_select_end_area)
     void rl_select_end_area_click() {
         clickId = R.id.rl_select_end_area;
-        fvSelectArea = new FloatWindow.With(context, dialogSelectArea)
-                .setWidth(LinearLayout.LayoutParams.MATCH_PARENT)
-                .setHeight(LinearLayout.LayoutParams.MATCH_PARENT)
-                .create();
-        fvSelectArea.show();
+
+        wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            lp.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        }
+        lp.format = PixelFormat.TRANSLUCENT;
+        lp.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.TOP;
+        wm.addView(dialogSelectArea, lp);
     }
 
     @OnClick(R.id.rl_select_start_area)

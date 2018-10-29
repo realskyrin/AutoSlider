@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="red">#d02129</color>
+    <color name="vip">#f5b53a</color>
+    <color name="light_red">#ff620d</color>
+    <color name="blue">#1189ff</color>
+    <color name="blue_dark">#ff187998</color>
+    <color name="white">#FFF</color>
+    <color name="green">#ff1ce322</color>
+    <color name="grey">#eeeffd</color>
+    <color name="dark_gray">#525252</color>
+    <color name="black">#000000</color>
+    <color name="main">#09537a</color>
+    <color name="main_trans">#991296db</color>
+    <color name="full_trans">#00000000</color>
+    <color name="no_trans">#00000001</color>
+    <color name="half_trans">#80000000</color>
+    <color name="status_bar">#09537a</color>
+    <color name="df_layout">#fafafa</color>
+    <color name="main_gray">#f5f5f5</color>
+    <color name="waring">#ff620d</color>
+    <color name="room_panel_bg">#80000000</color>
+    <color name="sys_msg_bg">#b4b4b4</color>
+    <color name="dialogue_msg">#3e3f3f</color>
+
+    <color name="green0">#45C01A</color>
+    <color name="green1">#45C01A</color>
+    <color name="green2">#A3DEA3</color>
+    <color name="green3">#1AAD19</color>
+
+    <color name="ok">#1aad19</color>
+    <color name="no">#ff620d</color>
+</resources>

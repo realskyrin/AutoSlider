@@ -49,6 +49,16 @@ public class GlobalActionBarService extends AccessibilityService {
         int max_dur = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_DUR_TIME, 800);
         int min_rate = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_RATE_TIME, 12);
         int max_rate = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_RATE_TIME, 27);
+
+        int min_start_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_X, 0);
+        int max_start_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_X, 0);
+        int min_start_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_Y, 0);
+        int max_start_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_Y, 0);
+
+        int min_end_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_X, 0);
+        int max_end_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_X, 0);
+        int min_end_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_Y, 0);
+        int max_end_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_Y, 0);
         try {
             if (timer != null) {
                 timer.purge();
@@ -61,8 +71,8 @@ public class GlobalActionBarService extends AccessibilityService {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Point startPoint = new Point(randInt(899, 999), randInt(1299, 1700));
-                Point endPoint = new Point(randInt(57, 260), randInt(1386, 1699));
+                Point startPoint = new Point(randInt(min_start_x, max_start_x), randInt(min_start_y, max_start_y));
+                Point endPoint = new Point(randInt(min_end_x, max_end_x), randInt(min_end_y, max_end_y));
                 long duration = randInt(min_dur, max_dur);
 
                 randSwipe(startPoint, endPoint, duration);

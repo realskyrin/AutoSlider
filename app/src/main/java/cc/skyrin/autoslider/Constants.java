@@ -9,13 +9,16 @@ public class Constants {
     public static final String KEY_MIN_RATE_TIME = "KEY_MIN_RATE_TIME";
     public static final String KEY_MAX_RATE_TIME = "KEY_MAX_RATE_TIME";
 
-    public static final String KEY_DEVICE_INFO = "KEY_DEVICE_INFO";
-    public static final String KEY_CHECK_UPDATE = "KEY_CHECK_UPDATE";
-    public static final String KEY_CLEAN_CACHE = "KEY_CLEAN_CACHE";
-    public static final String KEY_MSG_SAVE = "KEY_MSG_SAVE";
-    public static final String KEY_MEET_MODE_SAVE = "KEY_MEET_MODE_SAVE";
-    public static final String KEY_ACCOUNT_SET = "KEY_ACCOUNT_SET";
-    public static final String KEY_MEET_MANAGE = "KEY_MEET_MANAGE";
+    public static final String KEY_MIN_START_X = "KEY_MIN_START_X";
+    public static final String KEY_MAX_START_X = "KEY_MAX_START_X";
+    public static final String KEY_MIN_END_X = "KEY_MIN_END_X";
+    public static final String KEY_MAX_END_X = "KEY_MAX_END_X";
+
+    public static final String KEY_MIN_START_Y = "KEY_MIN_START_Y";
+    public static final String KEY_MAX_START_Y = "KEY_MAX_START_Y";
+    public static final String KEY_MIN_END_Y = "KEY_MIN_END_Y";
+    public static final String KEY_MAX_END_Y = "KEY_MAX_END_Y";
+
 
     public static final String ACTION_BACKPRESS = "cc.skyrin.autoslider.ACTION_BACKPRESS";
 }

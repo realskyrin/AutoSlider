@@ -2,4 +2,6 @@
     <string name="app_name">AutoSlider</string>
     <string name="tv_duration_val">每次滑动%1$d到%2$d毫秒</string>
     <string name="tv_rate_val">%1$d到%2$d秒滑动一次</string>
+    <string name="tv_start_area_val">从%1$d到%2$d</string>
+    <string name="tv_end_area_val">%1$d到%2$d秒滑动一次</string>
 </resources>

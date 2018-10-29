@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/iv3"
-            android:text="TextView" />
+            android:text="未指定" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -167,13 +167,14 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_chevron_right_black_24dp"
             android:visibility="visible" />
+
         <TextView
             android:id="@+id/tv_end_area_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/iv4"
-            android:text="TextView" />
+            android:text="未指定" />
     </RelativeLayout>
 
     <RelativeLayout

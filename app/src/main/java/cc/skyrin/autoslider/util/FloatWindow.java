@@ -50,15 +50,22 @@ public class FloatWindow {
     //是否可拖动
     private boolean moveAble;
 
-    /**
-     * 悬浮模式
-     */
-    private int overlayType;
     //透明度
     private float alpha;
     // 初始位置
     private int startX;
     private int startY;
+
+    /**
+     * View 高度
+     */
+    private int height;
+    /**
+     * View 宽度
+     */
+    private int width;
+
+
     //内部定义的View，专门处理事件拦截的父View
     private FloatView floatView;
     //外部传进来的需要悬浮的View
@@ -73,7 +80,8 @@ public class FloatWindow {
         this.startX = with.startX;
         this.startY = with.startY;
         this.alpha = with.alpha;
-        this.overlayType = with.overlayType;
+        this.height = with.height;
+        this.width = with.width;
 
         initWindowManager();
         initLayoutParams();
@@ -108,6 +116,12 @@ public class FloatWindow {
         }
         mLayoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
         mLayoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        if (height!=-666){
+            mLayoutParams.height = height;
+        }
+        if (width!=-666){
+            mLayoutParams.width = width;
+        }
         mLayoutParams.gravity = Gravity.START | Gravity.TOP;
         mLayoutParams.format = PixelFormat.RGBA_8888;
         //此处mLayoutParams.type不建议使用TYPE_TOAST，因为在一些版本较低的系统中会出现拖动异常的问题，虽然它不需要权限
@@ -115,9 +129,6 @@ public class FloatWindow {
             mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
             mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-        }
-        if (overlayType>0){
-            mLayoutParams.type = overlayType;
         }
         //悬浮窗背景明暗度0~1，数值越大背景越暗，只有在flags设置了WindowManager.LayoutParams.FLAG_DIM_BEHIND 这个属性才会生效
         mLayoutParams.dimAmount = 0.0f;
@@ -423,7 +434,14 @@ public class FloatWindow {
         private boolean moveAble;
         private float alpha = 1f;
 
-        private int overlayType = -1;
+        /**
+         * View 高度
+         */
+        private int height = -666;
+        /**
+         * View 宽度
+         */
+        private int width = -666;
 
         // 初始位置
         private int startX;
@@ -434,7 +452,6 @@ public class FloatWindow {
          * @param contentView 需要悬浮的视图
          */
         public With(Context context, @NonNull View contentView) {
-//            this.context = context.getApplicationContext(); // 可以悬浮到宿主应用之外
             this.context = context;
             this.contentView = contentView;
         }
@@ -490,12 +507,13 @@ public class FloatWindow {
             return this;
         }
 
-        /**
-         * 设置悬浮模式
-         * @param overlayType
-         */
-        public With setOverlayType(int overlayType) {
-            this.overlayType = overlayType;
+        public With setHeight(int height) {
+            this.height = height;
+            return this;
+        }
+
+        public With setWidth(int width) {
+            this.width = width;
             return this;
         }
 

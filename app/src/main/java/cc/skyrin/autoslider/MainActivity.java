@@ -8,9 +8,12 @@ import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import butterknife.OnClick;
 import cc.skyrin.autoslider.util.CommSharedUtil;
 import cc.skyrin.autoslider.util.CommonUtil;
 import cc.skyrin.autoslider.util.DialogUtil;
+import cc.skyrin.autoslider.util.FloatWindow;
 import cc.skyrin.autoslider.util.L;
 import cc.skyrin.autoslider.util.SystemSetings;
 
@@ -59,12 +63,17 @@ public class MainActivity extends AppCompatActivity {
     EditText edt_max_val;
     Button btn_ok;
 
+    View dialogSelectArea;
+    Button btn_save;
+
     MaterialDialog customDialog;
     View dialogView;
 
     Context context;
     BroadcastReceiver myReceiver;
     int clickId = 0;
+    FloatWindow fvSelectArea;
+    ViewGroup layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (myReceiver!=null){
+        if (myReceiver != null) {
             unregisterReceiver(myReceiver);
         }
     }
@@ -164,11 +173,17 @@ public class MainActivity extends AppCompatActivity {
             customDialog.dismiss();
             showToast("OK");
         });
+
+        dialogSelectArea = View.inflate(this, R.layout.dialog_select_area, null);
+        btn_save = dialogSelectArea.findViewById(R.id.btn_save);
+        btn_save.setOnClickListener(v -> {
+            fvSelectArea.remove();
+        });
     }
 
     @OnClick(R.id.rl_open_acc)
     void rl_open_acc_click() {
-        if (!SystemSetings.isAppOpsOn(context)){
+        if (!SystemSetings.isAppOpsOn(context)) {
             showToast("请先开启悬浮窗权限");
             return;
         }
@@ -192,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         clickId = R.id.rl_set_duration;
         customDialog = DialogUtil.getCustomDialog(this, dialogView);
         customDialog.show();
-        new Handler().postDelayed(() -> CommonUtil.showSoftInputFromWindow(edt_min_val), 200); // 等待弹窗初始化完成
+        new Handler().postDelayed(() -> CommonUtil.showSoftInputFromWindow(edt_min_val), 200);
     }
 
     @OnClick(R.id.rl_slide_rate)
@@ -207,15 +222,23 @@ public class MainActivity extends AppCompatActivity {
         clickId = R.id.rl_slide_rate;
         customDialog = DialogUtil.getCustomDialog(this, dialogView);
         customDialog.show();
-        new Handler().postDelayed(() -> CommonUtil.showSoftInputFromWindow(edt_min_val), 200); // 等待弹窗初始化完成
+        new Handler().postDelayed(() -> CommonUtil.showSoftInputFromWindow(edt_min_val), 200);
     }
+
 
     @OnClick(R.id.rl_select_end_area)
     void rl_select_end_area_click() {
+        clickId = R.id.rl_select_end_area;
+        fvSelectArea = new FloatWindow.With(context, dialogSelectArea)
+                .setWidth(LinearLayout.LayoutParams.MATCH_PARENT)
+                .setHeight(LinearLayout.LayoutParams.MATCH_PARENT)
+                .create();
+        fvSelectArea.show();
     }
 
     @OnClick(R.id.rl_select_start_area)
     void rl_select_start_area_click() {
+        clickId = R.id.rl_select_start_area;
     }
 
     public void showToast(String string) {
@@ -242,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    class MyReceiver extends BroadcastReceiver{
+    class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (Constants.ACTION_BACKPRESS.equals(intent.getAction())) {

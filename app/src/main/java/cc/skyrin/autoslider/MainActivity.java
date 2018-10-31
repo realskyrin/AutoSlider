@@ -297,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         lp.gravity = Gravity.END | Gravity.TOP;
+        selectLayout.clear();
         wm.addView(selectLayout, lp);
     }
 

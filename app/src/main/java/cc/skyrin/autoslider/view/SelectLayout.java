@@ -17,6 +17,7 @@ import cc.skyrin.autoslider.util.L;
 
 public class SelectLayout extends ConstraintLayout {
     Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    Paint endPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint paintText = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     /**
@@ -49,6 +50,10 @@ public class SelectLayout extends ConstraintLayout {
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.parseColor("#1aad19"));
 
+        endPaint.setStrokeWidth(dp2px(2));
+        endPaint.setStyle(Paint.Style.STROKE);
+        endPaint.setColor(Color.parseColor("#f45454"));
+
         paintText.setTextSize(dp2px(12));
         paintText.setColor(Color.parseColor("#1aad19"));
     }
@@ -56,23 +61,24 @@ public class SelectLayout extends ConstraintLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         // 绘制结束区域
-        canvas.drawRect(endRect, paint);
-        String endLtStrP = "[" + endRect.left + "," + endRect.top + "]";
-        String endRbStrP = "[" + endRect.right + "," + endRect.bottom + "]";
-        paintText.getTextBounds(endLtStrP, 0, endLtStrP.length(), ltStrBounds);
-        paintText.getTextBounds(endRbStrP, 0, endRbStrP.length(), rbStrBounds);
-        canvas.drawText(endLtStrP, endRect.left + 8, endRect.top + ltStrBounds.bottom - ltStrBounds.top, paintText);
-        canvas.drawText(endRbStrP, endRect.right - rbStrBounds.right - 10, endRect.bottom - 12, paintText);
+        canvas.drawRect(endRect, endPaint);
+//        String endLtStrP = "[" + endRect.left + "," + endRect.top + "]";
+//        String endRbStrP = "[" + endRect.right + "," + endRect.bottom + "]";
+//        paintText.getTextBounds(endLtStrP, 0, endLtStrP.length(), ltStrBounds);
+//        paintText.getTextBounds(endRbStrP, 0, endRbStrP.length(), rbStrBounds);
+//        canvas.drawText(endLtStrP, endRect.left + 8, endRect.top + ltStrBounds.bottom - ltStrBounds.top, paintText);
+//        canvas.drawText(endRbStrP, endRect.right - rbStrBounds.right - 10, endRect.bottom - 12, paintText);
 
         // 绘制起始区域
         canvas.drawRect(startRect, paint);
-        String startLtStrP = "[" + startRect.left + "," + startRect.top + "]";
-        String startRbStrP = "[" + startRect.right + "," + startRect.bottom + "]";
-        paintText.getTextBounds(startLtStrP, 0, startLtStrP.length(), ltStrBounds);
-        paintText.getTextBounds(startRbStrP, 0, startRbStrP.length(), rbStrBounds);
-        canvas.drawText(startLtStrP, startRect.left + 8, startRect.top + ltStrBounds.bottom - ltStrBounds.top, paintText);
-        canvas.drawText(startRbStrP, startRect.right - rbStrBounds.right - 10, startRect.bottom - 12, paintText);
+//        String startLtStrP = "[" + startRect.left + "," + startRect.top + "]";
+//        String startRbStrP = "[" + startRect.right + "," + startRect.bottom + "]";
+//        paintText.getTextBounds(startLtStrP, 0, startLtStrP.length(), ltStrBounds);
+//        paintText.getTextBounds(startRbStrP, 0, startRbStrP.length(), rbStrBounds);
+//        canvas.drawText(startLtStrP, startRect.left + 8, startRect.top + ltStrBounds.bottom - ltStrBounds.top, paintText);
+//        canvas.drawText(startRbStrP, startRect.right - rbStrBounds.right - 10, startRect.bottom - 12, paintText);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -104,10 +110,7 @@ public class SelectLayout extends ConstraintLayout {
             startSelected = true;
         }
         if (startRect.bottom != 0 && endRect.bottom != 0) {
-            // 都有值
-            startSelected = false;
             clear();
-            L.d("clear");
         }
         if (startSelected) {
             end.x = rawX;
@@ -135,6 +138,7 @@ public class SelectLayout extends ConstraintLayout {
     }
 
     public void clear() {
+        startSelected = false;
         startRect.top = 0;
         startRect.bottom = 0;
         startRect.left = 0;

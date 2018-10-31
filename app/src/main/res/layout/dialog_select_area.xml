@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cc.skyrin.autoslider.view.SelectLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<cc.skyrin.autoslider.view.SelectLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/half_trans">
-        <ImageButton
-            android:id="@+id/btn_save"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_ok"
-            android:background="@null"/>
+    android:background="@color/half_trans"
+    tools:layout_editor_absoluteY="81dp">
+
+    <ImageButton
+        android:id="@+id/btn_save"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@null"
+        android:src="@drawable/ic_ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_cancel"
@@ -32,14 +33,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="0dp"
         android:text="拖动以选取"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintTop_toTopOf="@+id/btn_save" />
 </cc.skyrin.autoslider.view.SelectLayout>

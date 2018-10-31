@@ -21,4 +21,5 @@ public class Constants {
 
 
     public static final String ACTION_BACKPRESS = "cc.skyrin.autoslider.ACTION_BACKPRESS";
+    public static final String ACTION_SWITCH_OVERLY = "cc.skyrin.autoslider.ACTION_SWITCH_OVERLY";
 }

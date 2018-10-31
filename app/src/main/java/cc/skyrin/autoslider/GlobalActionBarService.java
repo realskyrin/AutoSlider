@@ -50,15 +50,15 @@ public class GlobalActionBarService extends AccessibilityService {
         int min_rate = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_RATE_TIME, 12);
         int max_rate = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_RATE_TIME, 27);
 
-        int min_start_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_X, 0);
-        int max_start_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_X, 0);
-        int min_start_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_Y, 0);
-        int max_start_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_Y, 0);
+        int min_start_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_X, 0);
+        int max_start_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_X, 0);
+        int min_start_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_Y, 0);
+        int max_start_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_Y, 0);
 
-        int min_end_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_X, 0);
-        int max_end_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_X, 0);
-        int min_end_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_Y, 0);
-        int max_end_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_Y, 0);
+        int min_end_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_X, 0);
+        int max_end_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_X, 0);
+        int min_end_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_Y, 0);
+        int max_end_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_Y, 0);
         try {
             if (timer != null) {
                 timer.purge();
@@ -120,17 +120,13 @@ public class GlobalActionBarService extends AccessibilityService {
     }
 
     private void configureSwipeButton() {
-        View btn_settings = layout.findViewById(R.id.btn_settings);
-        View btn_home = layout.findViewById(R.id.btn_home);
+        View btnSettings = layout.findViewById(R.id.btn_settings);
+        View btnHome = layout.findViewById(R.id.btn_home);
         CheckBox cbRead = layout.findViewById(R.id.cb_read);
-        btn_settings.setOnClickListener(v -> {
-            if (MyApplication.isActivityVisible()) {
-                sendBroadcast(new Intent(Constants.ACTION_BACKPRESS));
-            } else {
-                SystemSetings.startApp(getApplicationContext(), getPackageName());
-            }
+        btnSettings.setOnClickListener(v -> {
+            sendBroadcast(new Intent(Constants.ACTION_SWITCH_OVERLY));
         });
-        btn_home.setOnClickListener(view -> {
+        btnHome.setOnClickListener(view -> {
             if (MyApplication.isActivityVisible()) {
                 sendBroadcast(new Intent(Constants.ACTION_BACKPRESS));
             } else {

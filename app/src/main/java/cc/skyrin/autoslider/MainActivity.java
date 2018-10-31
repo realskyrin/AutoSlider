@@ -14,8 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -33,7 +31,6 @@ import butterknife.OnClick;
 import cc.skyrin.autoslider.util.CommSharedUtil;
 import cc.skyrin.autoslider.util.CommonUtil;
 import cc.skyrin.autoslider.util.DialogUtil;
-import cc.skyrin.autoslider.util.FloatWindow;
 import cc.skyrin.autoslider.util.L;
 import cc.skyrin.autoslider.util.SystemSetings;
 import cc.skyrin.autoslider.view.SelectLayout;
@@ -45,21 +42,15 @@ public class MainActivity extends AppCompatActivity {
     View rl_open_ops;
     @BindView(R.id.rl_set_duration)
     View rl_set_duration;
-    @BindView(R.id.rl_select_end_area)
-    View rl_select_end_area;
-    @BindView(R.id.rl_select_start_area)
-    View rl_select_start_area;
     @BindView(R.id.rl_slide_rate)
     View rl_slide_rate;
+    @BindView(R.id.rl_select_area)
+    View rl_select_area;
 
     @BindView(R.id.tv_acc_status)
     TextView tv_acc_status;
     @BindView(R.id.tv_ops_status)
     TextView tv_ops_status;
-    @BindView(R.id.tv_start_area_val)
-    TextView tv_start_area_val;
-    @BindView(R.id.tv_end_area_val)
-    TextView tv_end_area_val;
     @BindView(R.id.tv_duration_val)
     TextView tv_duration_val;
     @BindView(R.id.tv_rate_val)
@@ -137,24 +128,24 @@ public class MainActivity extends AppCompatActivity {
         int min_rate = CommSharedUtil.getInstance(context).getInt(Constants.KEY_MIN_RATE_TIME, 12);
         int max_rate = CommSharedUtil.getInstance(context).getInt(Constants.KEY_MAX_RATE_TIME, 27);
 
-        int min_start_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_X, 0);
-        int max_start_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_X, 0);
-        int min_start_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_Y, 0);
-        int max_start_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_Y, 0);
-
-        int min_end_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_X, 0);
-        int max_end_x =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_X, 0);
-        int min_end_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_Y, 0);
-        int max_end_y =  CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_Y, 0);
+//        int min_start_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_X, 0);
+//        int max_start_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_X, 0);
+//        int min_start_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_Y, 0);
+//        int max_start_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_Y, 0);
+//
+//        int min_end_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_X, 0);
+//        int max_end_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_X, 0);
+//        int min_end_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_Y, 0);
+//        int max_end_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_Y, 0);
 
         tv_duration_val.setText(String.format(getResources().getString(R.string.tv_duration_val), min_dur, max_dur));
         tv_rate_val.setText(String.format(getResources().getString(R.string.tv_rate_val), min_rate, max_rate));
 
-        String strStart = "["+min_start_x+","+min_start_y+"]"+","+"["+max_start_x+","+max_start_y+"]";
-        tv_start_area_val.setText(strStart);
-
-        String strEnd = "["+min_end_x+","+min_end_y+"]"+","+"["+max_end_x+","+max_end_y+"]";
-        tv_end_area_val.setText(strEnd);
+//        String strStart = "[" + min_start_x + "," + min_start_y + "]" + "," + "[" + max_start_x + "," + max_start_y + "]";
+//        tv_start_area_val.setText(strStart);
+//
+//        String strEnd = "[" + min_end_x + "," + min_end_y + "]" + "," + "[" + max_end_x + "," + max_end_y + "]";
+//        tv_end_area_val.setText(strEnd);
 
         dialogView = View.inflate(this, R.layout.dialog_setting, null);
         tl_max_val = dialogView.findViewById(R.id.tl_max_val);
@@ -208,28 +199,29 @@ public class MainActivity extends AppCompatActivity {
         btn_cancel = selectLayout.findViewById(R.id.btn_cancel);
         btn_save.setOnClickListener(v -> {
             wm.removeView(selectLayout);
-            Rect rect = selectLayout.getRect();
+            Rect startRect = selectLayout.getStartRect();
+            Rect endRect = selectLayout.getEndRect();
 
-            if (clickId == R.id.rl_select_start_area) {
-                String strStartPos = "["+rect.left+","+rect.top+"]"+","+"["+rect.right+","+rect.bottom+"]";
-                tv_start_area_val.setText(strStartPos);
-                CommSharedUtil.getInstance(context).putInt(Constants.KEY_MIN_START_X, rect.left);
-                CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_START_X, rect.right);
-                CommSharedUtil.getInstance(context).putInt(Constants.KEY_MIN_START_Y, rect.top);
-                CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_START_Y, rect.bottom);
-            }else if (clickId==R.id.rl_select_end_area){
-                String strEndPos = "["+rect.left+","+rect.top+"]"+","+"["+rect.right+","+rect.bottom+"]";
-                tv_end_area_val.setText(strEndPos);
-                CommSharedUtil.getInstance(context).putInt(Constants.KEY_MIN_END_X, rect.left);
-                CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_END_X, rect.right);
-                CommSharedUtil.getInstance(context).putInt(Constants.KEY_MIN_END_Y, rect.top);
-                CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_END_Y, rect.bottom);
-            }
+            CommSharedUtil.getInstance(context).putInt(Constants.KEY_MIN_START_X, startRect.left);
+            CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_START_X, startRect.right);
+            CommSharedUtil.getInstance(context).putInt(Constants.KEY_MIN_START_Y, startRect.top);
+            CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_START_Y, startRect.bottom);
 
+            CommSharedUtil.getInstance(context).putInt(Constants.KEY_MIN_END_X, endRect.left);
+            CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_END_X, endRect.right);
+            CommSharedUtil.getInstance(context).putInt(Constants.KEY_MIN_END_Y, endRect.top);
+            CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_END_Y, endRect.bottom);
+//            if (clickId == R.id.rl_select_start_area) {
+//                String strStartPos = "["+rect.left+","+rect.top+"]"+","+"["+rect.right+","+rect.bottom+"]";
+//                tv_start_area_val.setText(strStartPos);
+//            }else if (clickId==R.id.rl_select_end_area){
+//                String strEndPos = "["+rect.left+","+rect.top+"]"+","+"["+rect.right+","+rect.bottom+"]";
+//                tv_end_area_val.setText(strEndPos);
+//            }
             selectLayout.clear();
         });
         btn_cancel.setOnClickListener(v -> {
-            wm.removeView(selectLayout);
+            hideSelectLayout();
             selectLayout.clear();
         });
     }
@@ -278,16 +270,8 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> CommonUtil.showSoftInputFromWindow(edt_min_val), 200);
     }
 
-
-    @OnClick(R.id.rl_select_end_area)
-    void rl_select_end_area_click() {
-        clickId = R.id.rl_select_end_area;
-        showSelectLayout();
-    }
-
-    @OnClick(R.id.rl_select_start_area)
-    void rl_select_start_area_click() {
-        clickId = R.id.rl_select_start_area;
+    @OnClick(R.id.rl_select_area)
+    void rl_select_area_click() {
         showSelectLayout();
     }
 
@@ -300,20 +284,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void showSelectLayout(){
+    void showSelectLayout() {
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             lp.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
-            lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+            lp.type = WindowManager.LayoutParams.TYPE_PHONE;
         }
         lp.format = PixelFormat.TRANSLUCENT;
         lp.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.gravity = Gravity.END|Gravity.TOP;
+        lp.gravity = Gravity.END | Gravity.TOP;
         wm.addView(selectLayout, lp);
+    }
+
+    private void hideSelectLayout() {
+        wm.removeView(selectLayout);
     }
 
     public float dp2px(float dp) {
@@ -327,20 +315,38 @@ public class MainActivity extends AppCompatActivity {
         myReceiver = new MyReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.ACTION_BACKPRESS);
+        filter.addAction(Constants.ACTION_SWITCH_OVERLY);
         registerReceiver(myReceiver, filter);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        goHome();
+    }
+
+    void goHome() {
+        Intent home = new Intent(Intent.ACTION_MAIN);
+        home.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        home.addCategory(Intent.CATEGORY_HOME);
+        startActivity(home);
     }
 
     class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (Constants.ACTION_BACKPRESS.equals(intent.getAction())) {
-                onBackPressed();
+                goHome();
+            } else if (Constants.ACTION_SWITCH_OVERLY.equals(intent.getAction())) {
+                showHideSelectLayout();
             }
+        }
+    }
+
+    void showHideSelectLayout() {
+        if (selectLayout.isAttachedToWindow()) {
+            hideSelectLayout();
+        } else {
+            showSelectLayout();
         }
     }
 }

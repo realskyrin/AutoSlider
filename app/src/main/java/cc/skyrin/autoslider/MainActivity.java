@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tv_duration_val;
     @BindView(R.id.tv_rate_val)
     TextView tv_rate_val;
+    @BindView(R.id.tv_start_area_val)
+    TextView tv_start_area_val;
 
     TextInputLayout tl_min_val;
     TextInputLayout tl_max_val;
@@ -106,6 +108,11 @@ public class MainActivity extends AppCompatActivity {
             tv_acc_status.setText("未开启");
             tv_acc_status.setTextColor(getColor(R.color.no));
         }
+
+        int min_start_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_X, 0);
+        if (min_start_x!=0){
+            tv_start_area_val.setText("已存储");
+        }
     }
 
     @Override
@@ -128,24 +135,8 @@ public class MainActivity extends AppCompatActivity {
         int min_rate = CommSharedUtil.getInstance(context).getInt(Constants.KEY_MIN_RATE_TIME, 12);
         int max_rate = CommSharedUtil.getInstance(context).getInt(Constants.KEY_MAX_RATE_TIME, 27);
 
-//        int min_start_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_X, 0);
-//        int max_start_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_X, 0);
-//        int min_start_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_Y, 0);
-//        int max_start_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_Y, 0);
-//
-//        int min_end_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_X, 0);
-//        int max_end_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_X, 0);
-//        int min_end_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_Y, 0);
-//        int max_end_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_Y, 0);
-
         tv_duration_val.setText(String.format(getResources().getString(R.string.tv_duration_val), min_dur, max_dur));
         tv_rate_val.setText(String.format(getResources().getString(R.string.tv_rate_val), min_rate, max_rate));
-
-//        String strStart = "[" + min_start_x + "," + min_start_y + "]" + "," + "[" + max_start_x + "," + max_start_y + "]";
-//        tv_start_area_val.setText(strStart);
-//
-//        String strEnd = "[" + min_end_x + "," + min_end_y + "]" + "," + "[" + max_end_x + "," + max_end_y + "]";
-//        tv_end_area_val.setText(strEnd);
 
         dialogView = View.inflate(this, R.layout.dialog_setting, null);
         tl_max_val = dialogView.findViewById(R.id.tl_max_val);
@@ -211,14 +202,8 @@ public class MainActivity extends AppCompatActivity {
             CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_END_X, endRect.right);
             CommSharedUtil.getInstance(context).putInt(Constants.KEY_MIN_END_Y, endRect.top);
             CommSharedUtil.getInstance(context).putInt(Constants.KEY_MAX_END_Y, endRect.bottom);
-//            if (clickId == R.id.rl_select_start_area) {
-//                String strStartPos = "["+rect.left+","+rect.top+"]"+","+"["+rect.right+","+rect.bottom+"]";
-//                tv_start_area_val.setText(strStartPos);
-//            }else if (clickId==R.id.rl_select_end_area){
-//                String strEndPos = "["+rect.left+","+rect.top+"]"+","+"["+rect.right+","+rect.bottom+"]";
-//                tv_end_area_val.setText(strEndPos);
-//            }
             selectLayout.clear();
+            tv_start_area_val.setText("已存储");
         });
         btn_cancel.setOnClickListener(v -> {
             hideSelectLayout();
@@ -285,6 +270,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void showSelectLayout() {
+        // 设置位置
+        setRect();
+
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -297,8 +285,25 @@ public class MainActivity extends AppCompatActivity {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         lp.gravity = Gravity.END | Gravity.TOP;
-        selectLayout.clear();
         wm.addView(selectLayout, lp);
+    }
+
+    private void setRect() {
+        int min_start_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_X, 0);
+        int max_start_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_X, 0);
+        int min_start_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_START_Y, 0);
+        int max_start_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_START_Y, 0);
+
+        int min_end_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_X, 0);
+        int max_end_x = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_X, 0);
+        int min_end_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MIN_END_Y, 0);
+        int max_end_y = CommSharedUtil.getInstance(this).getInt(Constants.KEY_MAX_END_Y, 0);
+
+        Rect startRect = new Rect(min_start_x,min_start_y,max_start_x,max_start_y);
+        Rect endRect = new Rect(min_end_x,min_end_y,max_end_x,max_end_y);
+        selectLayout.setStartRect(startRect);
+        selectLayout.setEndRect(endRect);
+        selectLayout.invalidate();
     }
 
     private void hideSelectLayout() {

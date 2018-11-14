@@ -61,24 +61,10 @@ public class SelectLayout extends ConstraintLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         // 绘制结束区域
         canvas.drawRect(endRect, endPaint);
-//        String endLtStrP = "[" + endRect.left + "," + endRect.top + "]";
-//        String endRbStrP = "[" + endRect.right + "," + endRect.bottom + "]";
-//        paintText.getTextBounds(endLtStrP, 0, endLtStrP.length(), ltStrBounds);
-//        paintText.getTextBounds(endRbStrP, 0, endRbStrP.length(), rbStrBounds);
-//        canvas.drawText(endLtStrP, endRect.left + 8, endRect.top + ltStrBounds.bottom - ltStrBounds.top, paintText);
-//        canvas.drawText(endRbStrP, endRect.right - rbStrBounds.right - 10, endRect.bottom - 12, paintText);
-
         // 绘制起始区域
         canvas.drawRect(startRect, paint);
-//        String startLtStrP = "[" + startRect.left + "," + startRect.top + "]";
-//        String startRbStrP = "[" + startRect.right + "," + startRect.bottom + "]";
-//        paintText.getTextBounds(startLtStrP, 0, startLtStrP.length(), ltStrBounds);
-//        paintText.getTextBounds(startRbStrP, 0, startRbStrP.length(), rbStrBounds);
-//        canvas.drawText(startLtStrP, startRect.left + 8, startRect.top + ltStrBounds.bottom - ltStrBounds.top, paintText);
-//        canvas.drawText(startRbStrP, startRect.right - rbStrBounds.right - 10, startRect.bottom - 12, paintText);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -150,11 +136,19 @@ public class SelectLayout extends ConstraintLayout {
         invalidate();
     }
 
+    public void setStartRect(Rect rect){
+        this.startRect = rect;
+    }
+
     public Rect getStartRect() {
         Rect rstRect = startRect;
         rstRect.top += getStatusBarHeight();
         rstRect.bottom += getStatusBarHeight();
         return rstRect;
+    }
+
+    public void setEndRect(Rect rect){
+        this.endRect = rect;
     }
 
     public Rect getEndRect() {

@@ -193,16 +193,12 @@ object SystemSetings {
     fun startApp(context: Context, pkgName: String): Boolean {
         try {
             val manager = context.packageManager
-            val openApp = manager.getLaunchIntentForPackage(pkgName)
-            openApp!!.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            if (openApp == null) {
-                return false
-            }
+            val openApp = manager.getLaunchIntentForPackage(pkgName) ?: return false
+            openApp.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             context.startActivity(openApp)
         } catch (e: Exception) {
             return false
         }
-
         return true
     }
 }

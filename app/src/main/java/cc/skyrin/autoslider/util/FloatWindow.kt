@@ -50,6 +50,12 @@ class FloatWindow private constructor(with: With) {
     // 初始位置
     private val startX: Int
     private val startY: Int
+    // margin
+    private val left: Int
+    private val top: Int
+    private val right: Int
+    private val bottom: Int
+
 
     /**
      * View 高度
@@ -74,6 +80,10 @@ class FloatWindow private constructor(with: With) {
         this.moveAble = with.moveAble
         this.startX = with.startX
         this.startY = with.startY
+        this.left = with.left
+        this.top = with.top
+        this.right = with.right
+        this.bottom = with.bottom
         this.alpha = with.alpha
         this.height = with.height
         this.width = with.width
@@ -128,7 +138,7 @@ class FloatWindow private constructor(with: With) {
         //悬浮窗透明度0~1，数值越大越不透明
         mLayoutParams!!.alpha = alpha
         //悬浮窗起始位置
-        mLayoutParams!!.x = startX
+        mLayoutParams!!.x = startX + left
         mLayoutParams!!.y = startY
     }
 
@@ -303,9 +313,9 @@ class FloatWindow private constructor(with: With) {
             val fromX = mLayoutParams!!.x.toFloat()
 
             if (rowX <= mDisplayMetrics!!.widthPixels / 2) {
-                mLayoutParams!!.x = 0
+                mLayoutParams!!.x = left
             } else {
-                mLayoutParams!!.x = mDisplayMetrics!!.widthPixels
+                mLayoutParams!!.x = mDisplayMetrics!!.widthPixels - right
             }
 
             //这里使用ValueAnimator来平滑计算起始X坐标到结束X坐标之间的值，并更新悬浮窗位置
@@ -326,7 +336,7 @@ class FloatWindow private constructor(with: With) {
      * @param context     上下文环境
      * @param contentView 需要悬浮的视图
      */
-    (val context: Context,val contentView: View) {
+    (val context: Context, val contentView: View) {
         var autoAlign: Boolean = false
         var modality: Boolean = false
         var moveAble: Boolean = false
@@ -344,6 +354,11 @@ class FloatWindow private constructor(with: With) {
         // 初始位置
         var startX: Int = 0
         var startY: Int = 0
+        // margin
+        var left: Int = 0
+        var top: Int = 0
+        var right: Int = 0
+        var bottom: Int = 0
 
         /**
          * 是否自动贴边
@@ -388,6 +403,14 @@ class FloatWindow private constructor(with: With) {
         fun setStartLocation(startX: Int, startY: Int): With {
             this.startX = startX
             this.startY = startY
+            return this
+        }
+
+        fun setMargin(left: Int, top: Int, right: Int, bottom: Int): With {
+            this.left = left
+            this.top = top
+            this.right = right
+            this.bottom = bottom
             return this
         }
 

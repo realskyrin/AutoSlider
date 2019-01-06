@@ -75,12 +75,23 @@ class GlobalActionBarService : AccessibilityService() {
     @SuppressLint("InflateParams")
     private fun showActionBar() {
         layout = LayoutInflater.from(this).inflate(R.layout.action_bar, null)
+
         floatWindow = FloatWindow.With(this, layout)
-                .setModality(false)
-                .setMoveAble(true)
-                .setAutoAlign(true)
                 .create()
         floatWindow!!.show()
+
+        // android 7.0 要求 view 必须附加到 window 之后 view#post 才会执行
+        layout.post {
+            floatWindow = FloatWindow.With(this, layout)
+                    .setModality(false)
+                    .setMoveAble(true)
+                    .setAutoAlign(true)
+                    // 获取到 layout 的宽度计算右边距
+                    .setMargin(20, 0, layout.width + 20, 0)
+                    .create()
+            floatWindow!!.remove()
+            floatWindow!!.show()
+        }
     }
 
     internal fun randSwipe(startPoint: Point, endPoint: Point, duration: Long) {

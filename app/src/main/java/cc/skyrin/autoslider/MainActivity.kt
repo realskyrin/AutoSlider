@@ -244,9 +244,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showSelectLayout() {
+        if (!SystemSetings.isAppOpsOn(context)) {
+            showToast("请先开启悬浮窗权限")
+            return
+        }
         // 设置位置
         setRect()
-
         wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val lp = WindowManager.LayoutParams()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -259,6 +262,9 @@ class MainActivity : AppCompatActivity() {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.MATCH_PARENT
         lp.gravity = Gravity.END or Gravity.TOP
+        if (selectLayout.parent!=null){
+            wm!!.removeView(selectLayout)
+        }
         wm!!.addView(selectLayout, lp)
     }
 
